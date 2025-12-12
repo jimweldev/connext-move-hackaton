@@ -22,7 +22,7 @@ class MoveTransportRequestController extends Controller {
         $queryParams = $request->all();
 
         try {
-            $query = MoveTransportRequest::query();
+            $query = MoveTransportRequest::with(['move_driver', 'move_vehicle']);
             $type = 'paginate';
             QueryHelper::apply($query, $queryParams, $type);
 

@@ -1,4 +1,5 @@
 import type { User } from '../user/user';
+import type { MoveVehicle } from './move-vehicle';
 
 export type MoveTransportRequest = {
   id?: number;
@@ -18,6 +19,7 @@ export type MoveTransportRequest = {
   external_service_provider?: string;
   notes?: string;
   move_driver?: User;
+  move_vehicle?: MoveVehicle;
   created_at?: string;
   updated_at?: string;
 };

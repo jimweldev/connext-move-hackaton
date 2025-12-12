@@ -29,8 +29,8 @@ import SystemDropdownPage from './01_pages/private/examples/forms/system-dropdow
 import TextareaPage from './01_pages/private/examples/forms/textarea-page';
 import DataTableKanbanPage from './01_pages/private/examples/kanban/kanban-page';
 import HomePage from './01_pages/private/home/home-page';
-import MoveTransportRequestsPage from './01_pages/private/home/transport-requests/transport-requests-page';
-import MoveVehiclesPage from './01_pages/private/home/vehicles/move-vehicles-page';
+import MoveTransportRequestsPage from './01_pages/private/move/transport-requests/transport-requests-page';
+import MoveVehiclesPage from './01_pages/private/move/vehicles/move-vehicles-page';
 import GeneralPage from './01_pages/private/settings/general-page';
 import PasswordPage from './01_pages/private/settings/password/password-page';
 import ProfilePage from './01_pages/private/settings/profile/profile-page';
@@ -41,6 +41,7 @@ import AdminLayout from './02_layouts/private/admin-layout';
 import DriversLayout from './02_layouts/private/drivers-layout';
 import ExamplesLayout from './02_layouts/private/examples-layout';
 import HomeLayout from './02_layouts/private/home-layout';
+import MoveLayout from './02_layouts/private/move-layout';
 import PassengersLayout from './02_layouts/private/passengers-layout';
 import PrivateLayout from './02_layouts/private/private-layout';
 import SettingsLayout from './02_layouts/private/settings-layout';
@@ -57,17 +58,13 @@ const App = () => {
         // ACCOUNT TYPE | MAIN
         ...(user?.account_type === 'Main'
           ? [
-              // MAIN LAYOUT
+              // Home LAYOUT
               {
                 element: <HomeLayout />,
                 children: [
                   {
                     index: true,
-                    element: <MoveTransportRequestsPage />,
-                  },
-                  {
-                    path: 'vehicles',
-                    element: <MoveVehiclesPage />,
+                    element: <HomePage />,
                   },
                 ],
               },
@@ -179,6 +176,35 @@ const App = () => {
                     },
                   ]
                 : []),
+
+              // MOVE LAYOUT
+              {
+                path: 'move',
+                element: <MoveLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <h1>My Transport Requests</h1>,
+                  },
+                  {
+                    path: 'admin',
+                    children: [
+                      {
+                        index: true,
+                        element: <h1>Dashboard</h1>,
+                      },
+                      {
+                        path: 'transport-requests',
+                        element: <MoveTransportRequestsPage />,
+                      },
+                      {
+                        path: 'vehicles',
+                        element: <MoveVehiclesPage />,
+                      },
+                    ],
+                  },
+                ],
+              },
 
               // SETTINGS LAYOUT
               {

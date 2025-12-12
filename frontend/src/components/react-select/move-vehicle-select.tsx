@@ -3,17 +3,18 @@ import { components, type GroupBase, type OptionProps } from 'react-select';
 import { AsyncPaginate, type LoadOptions } from 'react-select-async-paginate';
 import { toast } from 'sonner';
 import type { ReactSelectOption } from '@/04_types/_common/react-select-option';
-import type { User } from '@/04_types/user/user';
+import type { MoveVehicle } from '@/04_types/move/move-vehicle';
 import { mainInstance } from '@/07_instances/main-instance';
-import { formatName } from '@/lib/user/format-name';
 
-type UserOptionData = {
+type MoveVehicleOptionData = {
   value: string;
   label: string;
   email: string;
 };
 
-const UserOption = (props: OptionProps<UserOptionData, false>) => (
+const MoveVehicleOption = (
+  props: OptionProps<MoveVehicleOptionData, false>,
+) => (
   <components.Option {...props}>
     <div className="flex flex-col">
       <h6>{props.data.label}</h6>
@@ -22,23 +23,23 @@ const UserOption = (props: OptionProps<UserOptionData, false>) => (
   </components.Option>
 );
 
-const UserSelect = ({ ...props }) => {
+const MoveVehicleSelect = ({ ...props }) => {
   const loadOptions: LoadOptions<
-    UserOptionData,
-    GroupBase<UserOptionData>,
+    MoveVehicleOptionData,
+    GroupBase<MoveVehicleOptionData>,
     { page: number }
   > = async (searchQuery, _loadedOptions, additional = { page: 1 }) => {
     const page = additional.page || 1;
 
     try {
       const response = await mainInstance.get(
-        `/select/users?page=${page}&search=${searchQuery}&sort=first_name&limit=20${props.params ? `&${props.params}` : ''}`,
+        `/select/move-vehicles?page=${page}&search=${searchQuery}&sort=vehicle_name&limit=20`,
       );
 
-      const options = response.data.records.map((user: User) => ({
-        value: user.id,
-        label: formatName(user, 'semifull'),
-        email: user.email,
+      const options = response.data.records.map((moveVehicle: MoveVehicle) => ({
+        value: moveVehicle.id,
+        label: moveVehicle.vehicle_name,
+        email: moveVehicle.capacity,
       }));
 
       return {
@@ -81,7 +82,7 @@ const UserSelect = ({ ...props }) => {
       additional={{
         page: 1,
       }}
-      components={{ Option: UserOption }}
+      components={{ Option: MoveVehicleOption }}
       shouldLoadMore={shouldLoadMore}
       {...(props.isMulti && {
         filterOption: (candidate: ReactSelectOption) => {
@@ -96,4 +97,4 @@ const UserSelect = ({ ...props }) => {
   );
 };
 
-export default UserSelect;
+export default MoveVehicleSelect;

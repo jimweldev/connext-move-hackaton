@@ -6,17 +6,17 @@ use App\Http\Controllers\Example\ExampleTaskController;
 use App\Http\Controllers\Mail\MailLogController;
 use App\Http\Controllers\Mail\MailTemplateController;
 use App\Http\Controllers\Move\MoveTransportRequestController;
+use App\Http\Controllers\Move\MoveVehicleController;
 use App\Http\Controllers\Rbac\RbacPermissionController;
 use App\Http\Controllers\Rbac\RbacRoleController;
 use App\Http\Controllers\Select\SelectController;
 use App\Http\Controllers\System\SystemDropdownController;
 use App\Http\Controllers\System\SystemDropdownModuleController;
+use App\Http\Controllers\System\SystemLogController;
 use App\Http\Controllers\System\SystemSettingController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserImageController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Move\MoveVehicleController;
-use App\Http\Controllers\System\SystemLogController;
 
 Route::post('auth/login', [AuthController::class, 'loginWithEmail']);
 Route::post('/2fa/login', [AuthController::class, 'verify2faLogin']);
@@ -113,6 +113,7 @@ Route::middleware('auth.middleware')->group(function () {
     Route::get('/select/system-dropdowns', [SelectController::class, 'getSelectSystemDropdowns']);
     Route::get('/select/system-dropdown-modules', [SelectController::class, 'getSelectSystemDropdownModules']);
     Route::get('/select/system-dropdown-module-types', [SelectController::class, 'getSelectSystemDropdownModuleTypes']);
+    Route::get('/select/move-vehicles', [SelectController::class, 'getSelectMoveVehicles']);
 });
 
 // AUTHENTICATED USER

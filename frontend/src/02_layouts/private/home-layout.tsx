@@ -6,16 +6,11 @@ import MainTemplate from '@/03_templates/main-template';
 const HomeLayout = () => {
   const sidebarGroups: SidebarGroup[] = [
     {
-      // group: 'Home',
+      group: 'Home',
       links: [
         {
           name: 'Home',
           url: '/',
-          icon: FaHouse,
-        },
-        {
-          name: 'Vehicles',
-          url: '/vehicles',
           icon: FaHouse,
         },
       ],

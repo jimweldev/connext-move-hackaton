@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Move;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Helpers\QueryHelper;
 use App\Helpers\DynamicLogger;
+use App\Helpers\QueryHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Move\MoveVehicle;
+use Illuminate\Http\Request;
 
 class MoveVehicleController extends Controller {
     private $logger;
@@ -76,6 +76,7 @@ class MoveVehicleController extends Controller {
     public function store(Request $request) {
         try {
             $record = MoveVehicle::create($request->all());
+
             return response()->json($record, 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -99,6 +100,7 @@ class MoveVehicleController extends Controller {
             }
 
             $record->update($request->all());
+
             return response()->json($record, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -123,6 +125,7 @@ class MoveVehicleController extends Controller {
 
             // Delete the record
             $record->delete();
+
             return response()->json($record, 200);
         } catch (\Exception $e) {
             return response()->json([

@@ -1,4 +1,10 @@
-import { FaBarsStaggered, FaCode, FaHouse, FaUserGear } from 'react-icons/fa6';
+import {
+  FaBarsStaggered,
+  FaBus,
+  FaCode,
+  FaHouse,
+  FaUserGear,
+} from 'react-icons/fa6';
 import { NavLink, useLocation } from 'react-router';
 import useAuthUserStore from '@/05_stores/_common/auth-user-store';
 import { Button } from '@/components/ui/button';
@@ -20,7 +26,7 @@ const MainTemplateHeader = ({ open, setOpen }: MainTemplateHeaderProps) => {
   const { user } = useAuthUserStore();
   const location = useLocation();
 
-  const excludedMainMenuPaths = ['/admin', '/examples', '/settings'];
+  const excludedMainMenuPaths = ['/admin', '/move', '/examples', '/settings'];
   const isExcluded = excludedMainMenuPaths.some(path =>
     location.pathname.startsWith(path),
   );
@@ -37,10 +43,19 @@ const MainTemplateHeader = ({ open, setOpen }: MainTemplateHeaderProps) => {
       label: 'Home',
     },
     {
-      path: '/examples',
-      icon: <FaCode className="text-inherit" />,
-      label: 'Examples',
+      path: '/move',
+      icon: <FaBus className="text-inherit" />,
+      label: 'Move',
     },
+    ...(import.meta.env.VITE_ENV === 'development'
+      ? [
+          {
+            path: '/examples',
+            icon: <FaCode className="text-inherit" />,
+            label: 'Examples',
+          },
+        ]
+      : []),
   ];
 
   return (

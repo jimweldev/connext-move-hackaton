@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CircleAlert } from 'lucide-react';
 import { toast } from 'sonner';
-import useExampleTaskStore from '@/05_stores/example/example-task-store';
+import useMoveTransportRequestStore from '@/05_stores/move/move-transport-request-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,19 +12,19 @@ import {
 } from '@/components/ui/dialog';
 
 // Props
-type DeleteExampleTaskDialogProps = {
+type DeleteMoveTransportRequestDialogProps = {
   open: boolean; // Dialog open state
   setOpen: (value: boolean) => void; // Function to open/close dialog
   refetch: () => void; // Function to refetch the table data after deletion
 };
 
-const DeleteExampleTaskDialog = ({
+const DeleteMoveTransportRequestDialog = ({
   open,
   setOpen,
   refetch,
-}: DeleteExampleTaskDialogProps) => {
+}: DeleteMoveTransportRequestDialogProps) => {
   // Zustand store
-  const { selectedExampleTask } = useExampleTaskStore();
+  const { selectedMoveTransportRequest } = useMoveTransportRequestStore();
 
   // Loading state for delete button
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
@@ -35,7 +35,9 @@ const DeleteExampleTaskDialog = ({
     setIsLoadingDelete(true);
 
     toast.promise(
-      mainInstance.delete(`/examples/tasks/${selectedExampleTask?.id}`),
+      mainInstance.delete(
+        `/move/transport-requests/${selectedMoveTransportRequest?.id}`,
+      ),
       {
         loading: 'Loading...',
         success: () => {
@@ -59,15 +61,21 @@ const DeleteExampleTaskDialog = ({
             <CircleAlert className="text-destructive mx-auto mb-4" size={64} />
 
             {/* Modal title */}
-            <h3 className="text-center text-xl">Delete Example Task</h3>
+            <h3 className="text-center text-xl">
+              Delete Move Transport Request
+            </h3>
             <p className="text-muted-foreground mb-2 text-center">
               Are you sure you want to delete this record?
             </p>
 
             {/* Display item name */}
             <h2 className="text-center text-2xl font-semibold">
-              {selectedExampleTask?.name}
+              {selectedMoveTransportRequest?.passenger_name}
             </h2>
+            <p className="text-muted-foreground mb-2 text-center">
+              {selectedMoveTransportRequest?.pickup_location} to{' '}
+              {selectedMoveTransportRequest?.dropoff_location}
+            </p>
           </DialogBody>
 
           <DialogFooter className="flex justify-end gap-2">
@@ -88,4 +96,4 @@ const DeleteExampleTaskDialog = ({
   );
 };
 
-export default DeleteExampleTaskDialog;
+export default DeleteMoveTransportRequestDialog;

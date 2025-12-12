@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Select;
 
 use App\Helpers\QueryHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Move\MoveVehicle;
 use App\Models\Rbac\RbacPermission;
 use App\Models\Rbac\RbacRole;
 use App\Models\System\SystemDropdown;
@@ -266,6 +267,47 @@ class SelectController extends Controller {
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
+     * Display a paginated list of records with optional filtering and search.
+     */
+    public function getSelectMoveVehicles(Request $request) {
+        $queryParams = $request->all();
+
+        try {
+            $query = MoveVehicle::query();
+            $type = 'paginate';
+            QueryHelper::apply($query, $queryParams, $type);
+
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where(function ($query) use ($search) {
+                    $query->where('id', 'LIKE', '%'.$search.'%')
+                        ->orWhere('vehicle_name', 'LIKE', '%'.$search.'%');
+                });
+            }
+
+            $totalRecords = $query->count();
+            $limit = $request->input('limit', 10);
+            $page = $request->input('page', 1);
+            QueryHelper::applyLimitAndOffset($query, $limit, $page);
+
+            $records = $query->get();
+
+            return response()->json([
+                'records' => $records,
+                'meta' => [
+                    'total_records' => $totalRecords,
+                    'total_pages' => ceil($totalRecords / $limit),
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred',
                 'error' => $e->getMessage(),
             ], 400);
         }
