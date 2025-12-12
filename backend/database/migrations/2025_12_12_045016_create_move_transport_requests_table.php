@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('purpose');
             $table->string('status');
             $table->foreignId('move_driver_id')->constrained('users')->onDelete('cascade')->nullable();
-            $table->string('move_vehicle_id')->nullable();
+            $table->foreignId('move_vehicle_id')->constrained('move_vehicles')->onDelete('cascade')->nullable();
             $table->boolean('external_service_flag');
             $table->string('external_service_provider')->nullable();
             $table->string('notes');
