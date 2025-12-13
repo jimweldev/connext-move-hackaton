@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, User, X } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import { FaCarSide, FaMessage, FaPhone, FaPlus } from 'react-icons/fa6';
+import UserSelect from '@/components/react-select/user-select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -21,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function PassengerHomePage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -28,11 +30,13 @@ export default function PassengerHomePage() {
   const [pickup, setPickup] = useState('');
   const [dropoff, setDropoff] = useState('');
   const [headCount, setHeadCount] = useState('');
+  const [notes, setNotes] = useState('');
+  const [schedule, setSchedule] = useState('');
 
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-    from: new Date(2025, 11, 10),
-    to: new Date(2025, 11, 15),
-  });
+  //   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+  //     from: new Date(2025, 11, 10),
+  //     to: new Date(2025, 11, 15),
+  //   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,9 +50,7 @@ export default function PassengerHomePage() {
     user: string;
   };
 
-  const [dropPoints, setDropPoints] = useState<DropPoint[]>([
-    { id: crypto.randomUUID(), location: '', type: 'pickup', user: 'me' },
-  ]);
+  const [dropPoints, setDropPoints] = useState<DropPoint[]>([]);
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6 p-4">
@@ -214,17 +216,26 @@ export default function PassengerHomePage() {
             {/* Scrollable Card */}
             <div className="bg-background max-h-[55vh] space-y-4 overflow-y-auto rounded-xl border p-4 shadow-sm">
               {/* Schedule */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label className="text-sm font-semibold">Schedule</Label>
                 <div className="flex justify-center">
                   <Calendar
-                    mode="range"
-                    selected={dateRange}
-                    onSelect={setDateRange}
+                    mode="single"
                     numberOfMonths={1}
                     className="rounded-lg border [--cell-size:--spacing(11)] md:[--cell-size:--spacing(12)]"
                   />
                 </div>
+              </div> */}
+              <div className="space-y-2">
+                <Label htmlFor="schedule">Date and Time</Label>
+                <Input
+                  type="datetime-local"
+                  id="schedule"
+                  placeholder="Enter schedule"
+                  value={schedule}
+                  onChange={e => setSchedule(e.target.value)}
+                  required
+                />
               </div>
 
               {/* Headcount */}
@@ -239,7 +250,16 @@ export default function PassengerHomePage() {
                 />
               </div>
 
-              {/* Locations */}
+              {/* Users */}
+              <div className="space-y-1">
+                <Label htmlFor="users">Users</Label>
+                <UserSelect isMulti />
+                <small className="text-muted-foreground">
+                  These users will be notify when the ride is assigned.
+                </small>
+              </div>
+
+              {/* Pickup Location */}
               <div className="space-y-1">
                 <Label htmlFor="pickup">Pickup Location</Label>
                 <Input
@@ -251,6 +271,7 @@ export default function PassengerHomePage() {
                 />
               </div>
 
+              {/* Dropoff Location */}
               <div className="space-y-1">
                 <Label htmlFor="dropoff">Dropoff Location</Label>
                 <Input
@@ -262,15 +283,30 @@ export default function PassengerHomePage() {
                 />
               </div>
 
+              {/* Notes */}
+              <div className="space-y-1">
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  id="notes"
+                  placeholder="Enter any special notes"
+                  value={notes}
+                  onChange={e => setNotes(e.target.value)}
+                />
+              </div>
+
               {/* Drop Points */}
               <div className="space-y-3">
                 {/* Header */}
-                <div className="flex items-center justify-between">
-                  <Label className="text-sm font-semibold">Drop Points</Label>
-                  <span className="text-muted-foreground text-xs">
-                    {dropPoints.length} stop{dropPoints.length > 1 ? 's' : ''}
-                  </span>
-                </div>
+                {dropPoints.length > 0 && (
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-semibold">
+                      Stop Locations
+                    </Label>
+                    <span className="text-muted-foreground text-xs">
+                      {dropPoints.length} stop{dropPoints.length > 1 ? 's' : ''}
+                    </span>
+                  </div>
+                )}
 
                 {/* Drop Point Rows */}
                 <div className="space-y-3">
@@ -339,21 +375,19 @@ export default function PassengerHomePage() {
                         </Select>
 
                         {/* Remove */}
-                        {dropPoints.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="text-muted-foreground hover:text-destructive"
-                            onClick={() =>
-                              setDropPoints(
-                                dropPoints.filter((_, i) => i !== index),
-                              )
-                            }
-                          >
-                            <X className="text-destructive h-4 w-4" />
-                          </Button>
-                        )}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-destructive"
+                          onClick={() =>
+                            setDropPoints(
+                              dropPoints.filter((_, i) => i !== index),
+                            )
+                          }
+                        >
+                          <X className="text-destructive h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -376,7 +410,7 @@ export default function PassengerHomePage() {
                     ])
                   }
                 >
-                  + Add Drop Point
+                  + Add Stop
                 </Button>
               </div>
             </div>
