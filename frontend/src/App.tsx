@@ -15,6 +15,7 @@ import PermissionsTab from './01_pages/private/admin/users/_tabs/rbac/_tabs/perm
 import RolesTab from './01_pages/private/admin/users/_tabs/rbac/_tabs/roles/roles-tab';
 import RbacTab from './01_pages/private/admin/users/_tabs/rbac/rbac-tab';
 import UsersPage from './01_pages/private/admin/users/users-page';
+import DriversHomePage from './01_pages/private/drivers/drivers-home-page';
 import CrudBuilderPage from './01_pages/private/examples/builder/crud-builder-page';
 import DataTableGridPage from './01_pages/private/examples/data-table/data-table-grid-page';
 import DataTableListGridPage from './01_pages/private/examples/data-table/data-table-list-grid-page';
@@ -192,7 +193,7 @@ const App = () => {
                     children: [
                       {
                         index: true,
-                        element: <h1>Dashboard</h1>,
+                        element: <DashboardPage />,
                       },
                       {
                         path: 'transport-requests',
@@ -329,10 +330,202 @@ const App = () => {
                 children: [
                   {
                     index: true,
-                    element: <HomePage />,
+                    element: <DriversHomePage />,
                   },
                 ],
               },
+              ...(user?.is_admin
+                ? [
+                    {
+                      path: 'admin',
+                      element: <AdminLayout />,
+                      children: [
+                        {
+                          index: true,
+                          element: <DashboardPage />,
+                        },
+                        {
+                          path: 'users',
+                          element: <UsersPage />,
+                          children: [
+                            {
+                              index: true,
+                              element: <Navigate to="active-users" replace />,
+                            },
+                            {
+                              path: 'active-users',
+                              element: <ActiveUsersTab />,
+                            },
+                            {
+                              path: 'archived-users',
+                              element: <ArchivedUsersTab />,
+                            },
+                            {
+                              path: 'rbac',
+                              element: <RbacTab />,
+                              children: [
+                                {
+                                  index: true,
+                                  element: <Navigate to="roles" replace />,
+                                },
+                                {
+                                  path: 'roles',
+                                  element: <RolesTab />,
+                                },
+                                {
+                                  path: 'permissions',
+                                  element: <PermissionsTab />,
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          path: 'systems',
+                          element: <SystemsPage />,
+                          children: [
+                            {
+                              index: true,
+                              element: (
+                                <Navigate to="system-settings" replace />
+                              ),
+                            },
+                            {
+                              path: 'system-settings',
+                              element: <SystemSettingsTab />,
+                            },
+                            {
+                              path: 'system-dropdowns',
+                              element: <SystemDropdownsPage />,
+                              children: [
+                                {
+                                  index: true,
+                                  element: <Navigate to="dropdowns" replace />,
+                                },
+                                {
+                                  path: 'dropdowns',
+                                  element: <DropdownsTab />,
+                                },
+                                {
+                                  path: 'modules',
+                                  element: <ModulesTab />,
+                                },
+                              ],
+                            },
+                            {
+                              path: 'system-logs',
+                              element: <SystemLogsTab />,
+                            },
+                          ],
+                        },
+                        {
+                          path: 'mails',
+                          element: <MailsPage />,
+                          children: [
+                            {
+                              index: true,
+                              element: <Navigate to="logs" replace />,
+                            },
+                            {
+                              path: 'logs',
+                              element: <MailLogsTab />,
+                            },
+                            {
+                              path: 'templates',
+                              element: <MailTemplatesTab />,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ]
+                : []),
+              ...(import.meta.env.VITE_ENV === 'development'
+                ? [
+                    {
+                      path: 'examples',
+                      element: <ExamplesLayout />,
+                      children: [
+                        {
+                          index: true,
+                          element: <Navigate to="/examples/forms" />,
+                        },
+                        {
+                          path: 'forms',
+                          children: [
+                            {
+                              index: true,
+                              element: <InputPage />,
+                            },
+                            {
+                              path: 'textarea',
+                              element: <TextareaPage />,
+                            },
+                            {
+                              path: 'checkbox',
+                              element: <CheckboxPage />,
+                            },
+                            {
+                              path: 'radio-group',
+                              element: <RadioGroupPage />,
+                            },
+                            {
+                              path: 'react-dropzone',
+                              element: <ReactDropzonePage />,
+                            },
+                            {
+                              path: 'react-quill',
+                              element: <ReactQuillPage />,
+                            },
+                            {
+                              path: 'system-dropdown',
+                              element: <SystemDropdownPage />,
+                            },
+                            {
+                              path: 'react-select',
+                              element: <ReactSelectPage />,
+                            },
+                          ],
+                        },
+                        {
+                          path: 'data-table',
+                          children: [
+                            {
+                              index: true,
+                              element: <DataTableListPage />,
+                            },
+                            {
+                              path: 'grid',
+                              element: <DataTableGridPage />,
+                            },
+                            {
+                              path: 'list-grid',
+                              element: <DataTableListGridPage />,
+                            },
+                          ],
+                        },
+                        {
+                          path: 'kanban',
+                          children: [
+                            {
+                              index: true,
+                              element: <DataTableKanbanPage />,
+                            },
+                          ],
+                        },
+                        {
+                          path: 'builder',
+                          children: [
+                            {
+                              index: true,
+                              element: <CrudBuilderPage />,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ]
+                : []),
             ]
           : []),
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Move;
 
+use Illuminate\Http\Request;
 use App\Helpers\DynamicLogger;
 use App\Helpers\QueryHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Move\MoveTransportRequest;
-use Illuminate\Http\Request;
+use App\Models\Mail\MailLog;
+use App\Models\Mail\MailTemplate;
 
 class MoveTransportRequestController extends Controller {
     private $logger;
@@ -76,6 +78,23 @@ class MoveTransportRequestController extends Controller {
     public function store(Request $request) {
         try {
             $record = MoveTransportRequest::create($request->all());
+
+            $mailTemplateId = MailTemplate::where('label', 'Default Template')->first()->id;
+
+            $mailLog = [
+                'mail_template_id' => $mailTemplateId,
+                'user_id' => 1,
+                'subject' => 'Move Transport Request',
+                'recipient_email' => 'jimweldizon.dev@gmail.com',
+                'content_data' => json_encode([
+                    'greeting' => 'Hello, Jimwel Dizon',
+                    'message' => 'You have received a move transport request.',
+                ]),
+            ];
+
+            MailLog::create(array_filter($mailLog, function ($value) {
+                return $value !== null && $value !== '';
+            }));
 
             return response()->json($record, 201);
         } catch (\Exception $e) {
