@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { MapPin, User, X } from 'lucide-react';
-import type { DateRange } from 'react-day-picker';
 import { FaCarSide, FaMessage, FaPhone, FaPlus } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
 import UserSelect from '@/components/react-select/user-select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Card, CardBody } from '@/components/ui/card';
 import {
   Drawer,
@@ -51,6 +50,8 @@ export default function PassengerHomePage() {
   };
 
   const [dropPoints, setDropPoints] = useState<DropPoint[]>([]);
+
+  const navigate = useNavigate();
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6 p-4">
@@ -142,7 +143,11 @@ export default function PassengerHomePage() {
                 <User className="h-4 w-4" /> Maria Cruz
               </div>
             </div>
-            <Button variant="link" className="text-primary p-0">
+            <Button
+              variant="link"
+              className="text-primary p-0"
+              onClick={() => navigate('/move/trip-details')}
+            >
               View Details
             </Button>
           </CardBody>

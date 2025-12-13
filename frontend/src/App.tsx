@@ -31,6 +31,7 @@ import TextareaPage from './01_pages/private/examples/forms/textarea-page';
 import DataTableKanbanPage from './01_pages/private/examples/kanban/kanban-page';
 import HomePage from './01_pages/private/home/home-page';
 import PassengerHome from './01_pages/private/move/passenger/passenger-home';
+import TripDetailsPage from './01_pages/private/move/passenger/trip-details-page';
 import MoveTransportRequestsPage from './01_pages/private/move/transport-requests/transport-requests-page';
 import MoveVehiclesPage from './01_pages/private/move/vehicles/move-vehicles-page';
 import GeneralPage from './01_pages/private/settings/general-page';
@@ -187,6 +188,10 @@ const App = () => {
                   {
                     index: true,
                     element: <PassengerHome />,
+                  },
+                  {
+                    path: 'trip-details',
+                    element: <TripDetailsPage />,
                   },
                   {
                     path: 'admin',
