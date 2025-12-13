@@ -29,6 +29,7 @@ import SystemDropdownPage from './01_pages/private/examples/forms/system-dropdow
 import TextareaPage from './01_pages/private/examples/forms/textarea-page';
 import DataTableKanbanPage from './01_pages/private/examples/kanban/kanban-page';
 import HomePage from './01_pages/private/home/home-page';
+import PassengerHome from './01_pages/private/move/passenger/passenger-home';
 import MoveTransportRequestsPage from './01_pages/private/move/transport-requests/transport-requests-page';
 import MoveVehiclesPage from './01_pages/private/move/vehicles/move-vehicles-page';
 import GeneralPage from './01_pages/private/settings/general-page';
@@ -184,7 +185,7 @@ const App = () => {
                 children: [
                   {
                     index: true,
-                    element: <h1>My Transport Requests</h1>,
+                    element: <PassengerHome />,
                   },
                   {
                     path: 'admin',
