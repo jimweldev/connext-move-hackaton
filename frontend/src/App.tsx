@@ -192,7 +192,7 @@ const App = () => {
                     children: [
                       {
                         index: true,
-                        element: <h1>Dashboard</h1>,
+                        element: <DashboardPage />,
                       },
                       {
                         path: 'transport-requests',
